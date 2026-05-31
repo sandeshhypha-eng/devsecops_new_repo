@@ -1,4 +1,4 @@
-name: SCA
+name: security scanning
 on:
   workflow_dispatch:
   pull_request:
@@ -18,3 +18,21 @@ jobs:
             JAVA_HOME: ''
         with:
           args: --file=sample-java-app/pom.xml
+  sast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: SonarCloud analysis
+        # Note: SONAR_TOKEN, SONAR_PROJECT_KEY and SONAR_ORGANIZATION must be set in repo secrets
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          # Run Sonar analysis with the Maven Sonar plugin.
+          # The sonar.login property uses SONAR_TOKEN from the environment.
+          cd sample-java-app
+          mvn -B sonar:sonar \
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${SONAR_TOKEN}
