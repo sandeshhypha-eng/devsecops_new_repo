@@ -1,0 +1,19 @@
+name: SCA
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+
+jobs:
+  sca:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Snyk SCA (Software Component Analysis)
+        uses: snyk/actions/maven-3-jdk-17@master
+        continue-on-error: true # <--- Keeps pipeline going
+        env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+            JAVA_HOME: ''
+            
