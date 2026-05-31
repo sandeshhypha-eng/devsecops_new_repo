@@ -10,14 +10,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: 
-        run: |
-          cd sample-java-app 
-          pwd 
-          ls -lrt
       - name: Snyk SCA (Software Component Analysis)
         uses: snyk/actions/maven-3-jdk-17@master
         continue-on-error: false # <--- Keeps pipeline going
         env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
             JAVA_HOME: ''
+        with:
+          args: --file=sample-java-app/pom.xml
