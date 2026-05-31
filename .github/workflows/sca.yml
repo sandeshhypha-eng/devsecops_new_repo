@@ -21,8 +21,20 @@ jobs:
   sast:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+
+      - name: Build Java app
+        run: |
+          # Build the Java sample app using Maven. Skips tests for speed in demo runs.
+          cd sample-java-app
+          mvn -B -DskipTests package
+
       - name: SonarCloud analysis
         # Note: SONAR_TOKEN, SONAR_PROJECT_KEY and SONAR_ORGANIZATION must be set in repo secrets
         env:
@@ -31,7 +43,7 @@ jobs:
           # Run Sonar analysis with the Maven Sonar plugin.
           # The sonar.login property uses SONAR_TOKEN from the environment.
           cd sample-java-app
-          mvn clean verify sonar:sonar \
+          mvn -B sonar:sonar \
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
             -Dsonar.host.url=https://sonarcloud.io \
