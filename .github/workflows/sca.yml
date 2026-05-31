@@ -31,7 +31,7 @@ jobs:
           # Run Sonar analysis with the Maven Sonar plugin.
           # The sonar.login property uses SONAR_TOKEN from the environment.
           cd sample-java-app
-          mvn -B sonar:sonar \
+          mvn clean verify sonar:sonar \
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
             -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
             -Dsonar.host.url=https://sonarcloud.io \
