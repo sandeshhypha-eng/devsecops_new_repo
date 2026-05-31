@@ -10,9 +10,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Change directory
-        run: cd sample-java-app
       - name: Snyk SCA (Software Component Analysis)
+        working-directory: ./sample-java-app
         uses: snyk/actions/maven-3-jdk-17@master
         continue-on-error: false # <--- Keeps pipeline going
         env:
