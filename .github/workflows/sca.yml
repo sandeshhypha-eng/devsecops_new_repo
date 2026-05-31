@@ -14,7 +14,7 @@ jobs:
         run: cd sample-java-app
       - name: Snyk SCA (Software Component Analysis)
         uses: snyk/actions/maven-3-jdk-17@master
-        continue-on-error: true # <--- Keeps pipeline going
+        continue-on-error: false # <--- Keeps pipeline going
         env:
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
             JAVA_HOME: ''
